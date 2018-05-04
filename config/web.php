@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$fnb_route = require(__DIR__ . '/fnb_route.php');
 
 $config = [
     'id' => 'basic',
@@ -57,6 +58,8 @@ $config = [
     ],
     'params' => $params,
 ];
+
+$config["components"]["urlManager"]["rules"] = array_merge($config["components"]["urlManager"]["rules"], $fnb_route);
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

@@ -1,0 +1,740 @@
+<?php
+
+/* @var $this \yii\web\View */
+/* @var $content string */
+
+use yii\helpers\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
+AppAsset::register($this);
+
+$dashboard  = Yii::$app->controller->dashboard;
+$activities = Yii::$app->controller->activities;
+$user_data  = Yii::$app->controller->user_data;
+$user_cache = Yii::$app->controller->current_data;
+$user_properties = Yii::$app->controller->user_properties;
+$hotel_dashboard = Yii::$app->controller->hotel_dashboard;
+$fnb_menu      = Yii::$app->controller->fnb_menu;
+$add_class = Yii::$app->controller->add_class;
+$session_expired = Yii::$app->controller->session_expired;
+
+foreach ( $user_properties as $property ) {
+    if ( $property->selected ) {
+        $user_selected_property = $property;
+    }
+}
+?>
+<?php $this->beginPage() ?>
+<!DOCTYPE html>
+<html lang="<?= Yii::$app->language ?>">
+<head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='/assets/icon/pipe/favicon.ico' rel='icon' type='image/x-icon'/>
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
+    <?php $this->head() ?>
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/datepicker.css">
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/swiper.min.css">
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet.css">
+    <!-- yang buat sendiri -->
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet_fnb.css">
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet_hotel.css">
+</head>
+<body>
+<?php $this->beginBody() ?>
+
+    <header>
+        <div class="header-left">
+            <a href="<? echo Yii::$app->homeUrl ?>admin/dashboard"><div class="logo" style="background-image:url('<? echo Yii::$app->homeUrl ?>assets/icon/logo/logo_breezz.png');"></div></a>
+            <div class="menu">
+                <div class="menu-button clickable" target="#menu-button">
+                    <img src="<? echo Yii::$app->homeUrl ?>assets/icon/more/ic_menu_idle@2x.png" alt="">
+                    <span>Menu</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="profile clickable" target="#profile">
+                <div class="img-profile">
+                    <div class="img" style="background-image:url('<? echo Yii::$app->homeUrl ?>assets/photo/<? echo $dashboard->profile->icon?>');"></div>
+                </div>
+                <div class="data-profile">
+                    <div class="name-user"><? echo $user_cache->name ?></div>
+                    <div class="add-user"><? echo $user_selected_property->propertyName ?></div>
+                </div>
+            </div>
+            <div class="button button-logs clickable" target="#button-logs">
+                <span>Logs</span>
+            </div>
+            <div class="button button-i clickable" target="#button-i">
+                <span>i</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-overlay float-box" id="menu-button">
+        <div class="menu-overlay-wrapper">
+            <div class="col-xs-12 zero">
+                <ul>
+                    <li id="admin-dashboard"><a href="<? echo Yii::$app->homeUrl; ?>">Home</a></li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <ul>
+                    <li>Service <ul>
+                    <?
+                    foreach( $dashboard->services as $service ) {
+                    ?>
+                        <li id="<? echo str_replace("/","-",$service->uri) ?>"><a href="<? echo Yii::$app->homeUrl . $service->uri; ?>"><? echo $service->label; ?></a></li>
+                <?  } ?>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <ul>
+                    <li>USER MANAGEMENT <ul>
+                    <?
+                    foreach( $dashboard->user as $user_access ) {
+                    ?>
+                        <li id="<? echo str_replace("/","-",$user_access->uri); ?>"><a href="<? echo Yii::$app->homeUrl . $user_access->uri; ?>"><? echo $user_access->label?></a></li>
+                <?  } ?>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <ul>
+                    <li>PROPERTY MANAGEMENT <ul>
+                    <?
+                    foreach( $dashboard->property as $property ) {
+                    ?>
+                        <li id="<? echo str_replace("/","-",$property->uri); ?>"><a href="<? echo Yii::$app->homeUrl . $property->uri; ?>"><?echo $property->label ?></a></li>
+                <?  } ?>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+        <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="menu-overlay-footer _close" target="#menu-button">
+            <span>>></span>
+        </div>
+    </div>
+
+    <div class="notif-overlay float-box" id="profile">
+        <div class="notif-header">
+            <div class="notif-title _close" target="#profile">
+                Your Profile
+            </div>
+        </div>
+        <div class="notif-content">
+            <ul>
+                <li><a>Property</a>
+                    <ul class="property-option">
+                <?
+                    foreach( $user_properties as $property ) {
+                        if ( $property->selected ) {
+                ?>
+                            <li class="current" id="<? echo $property->propertyCode; ?>" property-name="<? echo $property->propertyName; ?>" property-icon="<? echo $property->icon ?>"><a href=""><? echo $property->propertyName; ?></a></li>
+                <?
+                        }
+                        else {
+                ?>
+                            <li class="" id="<? echo $property->propertyCode; ?>" property-name="<? echo $property->propertyName; ?>" property-icon="<? echo $property->icon ?>"><a href=""><? echo $property->propertyName; ?></a></li>
+                <?
+                        }
+                    }
+                ?>
+                    </ul>
+                </li>
+                <li><a href="" id="settings">Settings</a></li>
+                <li><a href="<? echo Yii::$app->homeUrl ?>admin/user_logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="notif-overlay float-box" id="button-i">
+        <div class="notif-header">
+            <div class="notif-title _close" target="#button-i">
+                Information
+            </div>
+        </div>
+        <div class="notif-content">
+        <p>A bit confuse here and there? Don’t worry we can help you.</p>
+            <ul class="inline">
+                <li><a href="">Glossary</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Tour</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="notif-overlay float-box" id="button-logs">
+        <div class="notif-header">
+            <div class="notif-title _close" target="#button-logs">
+                Logs Activity
+            </div>
+        </div>
+        <div class="notif-content long-activity">
+            <ul class="activity">
+                <?php
+                    if ( is_array($activities) ) {
+                        foreach( $activities as $activity ) {
+                ?>
+                    <li>
+                        <div class="thumb">
+                            <img src="<? echo Yii::$app->homeUrl ?>assets/photo/<? echo $activity->icon ?>" alt="">
+                        </div>
+                        <? echo $activity->text; ?>
+                        <div class="date"><? echo $activity->date; ?></div>
+                    </li>
+                <?php
+                        }
+                    }
+                ?>
+            </ul>
+            <div class="view-all">
+                <?php $form = ActiveForm::begin([
+                            'id' => 'form-view-more',
+                            'action' =>['admin/get_logs'],
+                            'fieldConfig' => [
+                                'options' => [
+                                    'tag' => false,
+                                ],
+                            ]
+                        ]); ?>
+                    <input type="hidden" id="start" name="start" value="<? echo count($activities); ?>" />
+
+
+                    <p id="view-more">View more</p>
+                    <p class="text-right" id="goup"></p>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="content background-users">
+
+        <div class="row-eq-height">
+
+            <div class="header-side">
+                <?
+                // echo "<pre>" . var_export($hotel_menu, true) . "</pre>";
+                ?>
+                <ul>
+                <?
+                    $main_uri = $_SERVER["REQUEST_URI"];
+                    if ( strlen($main_uri) > 3 ) {
+                        $current_uri = str_replace("pipev2/web/","",$main_uri);
+                    }
+                    else {
+                        $current_uri = null;
+                    }
+                    $nom = 0;
+                    foreach ( $fnb_menu as $main_menu ) { ?>
+                    <?
+                        if ( count($main_menu->submenu) > 0 ) {
+                            $main_menu_class = "";
+                            $ul_css = "";
+                            foreach( $main_menu->submenu as $sub_menu ) {
+                                if ( $current_uri == $sub_menu->uri ) {
+                                    $main_menu_class = "current";
+                                    $ul_css = "display: block";
+                                }
+                            } ?>
+                            <li class="sub-menu <?echo $main_menu_class?>">
+                            <?
+                                $nom++;
+                            ?>
+                                <a href="<? echo Yii::$app->homeUrl . str_replace("/fnb","fnb",$main_menu->uri) ?>" class="icon <? echo $main_menu->icon ?>"><? echo $main_menu->label ?></a>
+                                <ul style="<?echo $ul_css ?>">
+                                <?  foreach( $main_menu->submenu as $sub_menu ) {
+                                        $class = ( $current_uri == $sub_menu->uri ) ? "current" : "";
+                                ?>
+                                        <li class="<? echo $class ?>"><a href="<? echo Yii::$app->homeUrl.str_replace("/fnb","fnb",$sub_menu->uri) ?>"><?echo $sub_menu->label?></a></li>
+                                <?  }?>
+                                </ul>
+                            </li>
+                    <?  }
+                        else {?>
+                            <li>
+                                <a href="<? echo Yii::$app->homeUrl . $main_menu->uri ?>" class="icon <? echo (strtolower($main_menu->label) == 'dashboard' ) ? 'dashboard':$main_menu->icon; ?>"><? echo $main_menu->label ?></a>
+                            </li>
+                    <?  } ?>
+                <?  } ?>
+                </ul>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+            <div class="content-side">
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]) ?>
+                <?= $content ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+        <!-- </div> -->
+
+    <footer>
+        <div class="section text-left"><p>Powered by:</p> <img src="<? echo Yii::$app->homeUrl ?>assets/icon/logo/logo_footer_pipe.png" alt=""></div>
+        <div class="section text-center"><p>&copy;2017 Pipe All Rights Reserved.</p></div>
+        <div class="section text-right"><p><a href="">Privacy</a> & <a href="">Terms</a></p></div>
+        <div class="clearfix"></div>
+    </footer>
+
+    <?php $this->endBody() ?>
+
+    <script>
+            // If session expired
+            <?
+        if ( $session_expired ) {
+            echo "\$('#your-session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
+            echo "\$('#session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
+            echo "\$('#session-expired').modal('show');";
+        }
+
+        $uri = $_SERVER["REQUEST_URI"];
+
+        if ( strlen($uri) > 3 ) {
+            $id = str_replace("/", "-", substr($uri, 1, strlen($uri)-1));
+            $id = str_replace("pipe-web-","",$id);
+
+            echo "try {
+                    console.log('ID Res', \$('#$id'));
+                    \$('#$id').addClass('current');
+                } catch(e) {
+                    console.log('Error');
+                }";
+        }
+
+        ?>
+
+        var homeUrl = "<? echo Yii::$app->homeUrl; ?>";
+        console.log("homeurl", homeUrl);
+    </script>
+
+
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="create-list" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Create New Room List</h4>
+                </div>
+
+                <?php $form = ActiveForm::begin([
+                                    'id' => 'form-create-room',
+                                    'action' =>[''],
+                                    'fieldConfig' => [
+                                        'options' => [
+                                            'tag' => false,
+                                        ],
+                                    ]
+                                ]); ?>
+
+                <div class="modal-body zero">
+
+                    <div class="col-sm-6" style="padding-left: 0;">
+                        <div class="auth-form">
+
+                            <label for="">Room Number</label>
+                            <div class="clearfix">
+                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                <input type="text" name="room_no" required="" placeholder="Enter the room number" class="">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the bed type box above</div>
+                            </div>
+
+                            <label for="">Floor</label>
+                            <div class="clearfix">
+                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                <input type="text" name="floor" required="" placeholder="Enter the floor room" class="">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the bed type box above</div>
+                            </div>
+
+                            <label for="">Room View</label>
+                            <div class="clearfix select-input" id="room-view">
+                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                <input type="text" name="view_id" required="" placeholder="Select the room view" disabled class="">
+                                <div class="arrow"></div>
+                                <div class="select" style="display: none;">
+                                <!-- Beri class here untuk option yang match -->
+                                </div>
+                                <input type="hidden" name="view_id" required="" id="select" class="selected">
+                                <div class="error">Please fill the room view box above</div>
+                            </div>
+
+                            <label for="">Room Type</label>
+                            <div class="clearfix select-input" id="room-type">
+                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                <input type="text" name="type_id" required="" placeholder="Select the room type" disabled class="">
+                                <div class="arrow"></div>
+                                <div class="select" style="display: none;">
+                                <!-- Beri class here untuk option yang match -->
+                                </div>
+                                <input type="hidden" name="type_id" required="" id="select" class="selected">
+                                <div class="error">Please fill the room type box above</div>
+                            </div>
+
+                            <label for="">Bed Type</label>
+
+                            <div id="bed-type-boss">
+                                <div id="bed-type-box" for="1">
+                                    <div class="clearfix select-input" id="room-bed-1" style="width: 60%;float: left;">
+                                        <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                        <input type="text" name="room_bed" required="" placeholder="Select bed type" disabled class="">
+                                        <div class="arrow"></div>
+                                        <div class="select" style="display: none;">
+                                        <!-- Beri class here untuk option yang match -->
+                                        </div>
+                                        <input type="hidden" name="room_bed[]" required="" id="select" class="selected">
+                                        <div class="error">Please fill the box above</div>
+                                    </div>
+                                    <div class="clearfix select-input" id="room-bed-qty-1" style="width: 25%;float: left;margin-left: 4%;">
+                                        <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
+                                        <input type="text" name="room_bed_qty" required="" placeholder="1" disabled class="">
+                                        <div class="arrow"></div>
+                                        <div class="select" style="display: none;">
+                                        <!-- Beri class here untuk option yang match -->
+                                        <div class="option" value="1">1</div>
+                                        <div class="option" value="2">2</div>
+                                        <div class="option" value="3">3</div>
+                                        <div class="option" value="4">4</div>
+                                        </div>
+                                        <input type="hidden" name="room_bed_qty[]" required="" id="select" class="selected" value="1">
+                                        <div class="error">Please fill the box above</div>
+                                    </div>
+                                    <div class="clearfix" style="width: 8%;float: left;margin-left: 3%;">
+                                        <div class="minus-list">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix" style="width: 70%;float: left;">
+                                <div class="add-list">Add Another Bed Type</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6" style="padding-right: 0;">
+                        <div class="auth-form" id="room-lock">
+
+                            <label for="">Lock Type <i></i></label>
+                            <div class="clearfix round-radio">
+                                <div class="col-sm-4 zero">
+                                    <input type="radio" name="lock_type[]" value="0" id="lock-type-none" checked="">
+                                    <label for="lock-type-none"> None</label>
+                                </div>
+                                <div class="col-sm-4 zero">
+                                    <input type="radio" name="lock_type[]" value="1" id="lock-type-hotel">
+                                    <label for="lock-type-hotel"> Hotel Lock</label>
+                                </div>
+                                <div class="col-sm-4 zero">
+                                    <input type="radio" name="lock_type[]" value="2" id="lock-type-nac">
+                                    <label for="lock-type-nac"> NAC</label>
+                                </div>
+
+                            </div>
+                            <div class="hotel-lock">
+                            </div>
+
+                            <div class="nac">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <? ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- view List -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="create-room-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Create Room List</h4>
+        </div>
+
+        <div class="modal-body">
+            <p>Are you sure? You are about to create the room list.</p>
+        </div>
+
+            <div class="modal-footer">
+                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right" data-dismiss="modal" data-toggle="modal" data-target="#created-room-list">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- View Detail Menu -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Menu Details</h4>
+        </div>
+
+        <div class="modal-body" style="margin-bottom: 10px">
+            <div class="col-sm-4 zero bold">Menu Code</div>
+            <div class="col-sm-8" for="menu-no"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Menu Name</div>
+            <div class="col-sm-8" for="menu-name"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Type Menu</div>
+            <div class="col-sm-8" for="menu-type"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Price</div>
+            <div class="col-sm-8" for="menu-price"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Cook Duration</div>
+            <div class="col-sm-8" for="menu-duration"></div>
+            <div class="clearfix"></div>
+            <!-- <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Port ID</div>
+            <div class="col-sm-8" for="room-port"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">NAC</div>
+            <div class="col-sm-8" for="room-nac"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Timezone</div>
+            <div class="col-sm-8" for="room-timezone"></div>
+            <div class="clearfix"></div> -->
+        </div>
+
+        </div>
+    </div>
+    </div>
+    <!-- View detail Menu -->
+
+    <!-- Delete Menu List -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-menu-list" style="z-index: 99991;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Delete Menu</h4>
+        </div>
+        <?php $form = ActiveForm::begin([
+                            'id' => 'form-remove-menu',
+                            'action' =>['fnb/menu_delete'],
+                            'fieldConfig' => [
+                                'options' => [
+                                    'tag' => false,
+                                ],
+                            ]
+                        ]); ?>
+        <div class="modal-body">
+            <p>Are you sure? You are about to delete menu.</p>
+        </div>
+
+            <div class="modal-footer">
+                <input type="hidden" name="menu_id" />
+                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+            </div>
+        <? ActiveForm::end(); ?>
+        </div>
+    </div>
+    </div>
+    <!-- Delete Menu List -->
+
+    <!-- View Prep Detail -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-prep-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Prep Details</h4>
+        </div>
+
+        <div class="modal-body" style="margin-bottom: 10px">
+            <div class="col-sm-4 zero bold">Prep Code</div>
+            <div class="col-sm-8" for="prep-no"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Prep Name</div>
+            <div class="col-sm-8" for="prep-name"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <!-- <div class="col-sm-4 zero bold">Type Menu</div>
+            <div class="col-sm-8" for="menu-type"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Price</div>
+            <div class="col-sm-8" for="menu-price"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;"> -->
+
+            <div class="col-sm-4 zero bold">Prep Description</div>
+            <div class="col-sm-8" for="prep-desc"></div>
+            <div class="clearfix"></div>
+            <!-- <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Port ID</div>
+            <div class="col-sm-8" for="room-port"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">NAC</div>
+            <div class="col-sm-8" for="room-nac"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-sm-4 zero bold">Timezone</div>
+            <div class="col-sm-8" for="room-timezone"></div>
+            <div class="clearfix"></div> -->
+        </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- View Ingredient Detail -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-ingredients-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Ingredient Details</h4>
+        </div>
+
+        <div class="modal-body" style="margin-bottom: 10px">
+            <div class="col-sm-4 zero bold">Ingredient Code</div>
+            <div class="col-sm-8" for="ingredient-no"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+
+            <div class="col-sm-4 zero bold">Ingredient Name</div>
+            <div class="col-sm-8" for="ingredient-name"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+
+            <div class="col-sm-4 zero bold">Ingredient Stock</div>
+            <div class="col-sm-8" for="ingredient-stock"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+
+            <div class="col-sm-4 zero bold">Ingredient Satuan</div>
+            <div class="col-sm-8" for="ingredient-satuan"></div>
+            <div class="clearfix"></div>
+            <hr style="margin-top: 10px;margin-bottom: 10px;">
+
+        </div>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-prep-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Delete Prep List</h4>
+        </div>
+        <?php $form = ActiveForm::begin([
+                            'id' => 'form-remove-prep',
+                            'action' =>['fnb/kitchen_preparation_delete'],
+                            'fieldConfig' => [
+                                'options' => [
+                                    'tag' => false,
+                                ],
+                            ]
+                        ]); ?>
+        <div class="modal-body">
+            <p>Are you sure? You are about to delete a prep list.</p>
+        </div>
+
+            <div class="modal-footer">
+                <input type="hidden" name="prep_id">
+                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+            </div>
+            <? ActiveForm::end(); ?>
+        </div>
+    </div>
+    </div>
+
+    <!-- <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-ingredient-list" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="title">Delete Ingredient List</h4>
+        </div>
+        <?php $form = ActiveForm::begin([
+                            'id' => 'form-remove-ingredient',
+                            'action' =>['fnb/ingredient/delete'],
+                            'fieldConfig' => [
+                                'options' => [
+                                    'tag' => false,
+                                ],
+                            ]
+                        ]); ?>
+        <div class="modal-body">
+            <p>Are you sure? You are about to delete a prep list.</p>
+        </div>
+
+            <div class="modal-footer">
+                <input type="hidden" name="ingredient_id">
+                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+            </div>
+            <? ActiveForm::end(); ?>
+        </div>
+    </div>
+    </div> -->
+
+<?php $this->endPage() ?>
+
+
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/swiper.min.js"></script>
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/bootstrap.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/datepicker.js"></script>
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/moment.js"></script>
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/datetimepicker.js"></script>
+<!-- yang buat sendiri -->
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/main.js"></script>
+<script src="<? echo Yii::$app->homeUrl ?>assets/js/main-fnb.js"></script>
+</body>
+</html>

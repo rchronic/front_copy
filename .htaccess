@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /cobacoba/front_copy
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^.*$ web/index.php [L,QSA]

@@ -28,6 +28,7 @@ class FnbController extends \yii\web\Controller
     public $depends = [
      'yii\bootstrap\BootstrapPluginAsset',
     ];
+
     public function behaviors()
     {
         return [
@@ -59,28 +60,24 @@ class FnbController extends \yii\web\Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
+    public function actionDashboard()
     {
-
         $master = new Master_fnb();
+
         $this->dashboard    = $master->get_dashboard();
         $this->user_data    = $master->get_user_data();
-        //$this->current_data    = $master->get_current_data();
+        $this->current_data    = $master->get_current_data();
         $this->user_properties = $master->get_user_properties();
         $this->hotel_dashboard = $master->get_hotel_dashboard();
+        $this->activities   = $master->get_logs(0);
         $this->fnb_menu      = $master->get_fnb_menu();
-        $this->layout = "Fnb";
-        return $this->render('newpage', [
+        $this->layout = "fnb";
+
+        return $this->render('home-fnb', [
             "dashboard"    => $this->dashboard,
             "activities"   => $this->activities
         ]);
     }
-
 
     public function actionIngredientsList()
     {
