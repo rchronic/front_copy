@@ -34,6 +34,16 @@ class Master_fnb extends Model {
         return $this->main_master->get_dashboard();
     }
 
+    public function get_data($result) {
+        if(isset($result->status) && $result->status == true) {
+            return $result->data;
+        } else {
+            die("<script>
+                window.location.href = '".Yii::$app->homeUrl."admin/login';
+            </script>");
+        }
+    }
+
     public function get_user_data($userid = null)
     {
         return $this->main_master->get_user_data($userid);
@@ -77,4 +87,19 @@ class Master_fnb extends Model {
 
         return $fnb_menu;
     }
+
+    public function get_ingredients_list()
+    {
+        $session = Yii::$app->getSession();
+        if ( $ingredients_list = $session->get("fnb_ingredients_list") ) {
+            
+        }
+        else {
+            $ingredients_list = $this->api->get_ingredients_list();
+            $session->set("fnb_ingredients_list", $ingredients_list);
+        }
+
+        return $this->get_data($ingredients_list);
+    }
 }
+

@@ -59,4 +59,14 @@ class Api_fnb extends Model {
         $response = $this->send_request("fnb/dashboard/menu");
         return $response;
     }
+
+    public function get_ingredients_list()
+    {
+        $response = $this->send_request("fnb/ingredients/list");
+        // echo "<pre><br>hasilnya-list : ";
+        // var_dump($response);
+        // echo "</pre><br>";
+        // Yii::$app->end();
+        return $response;
+    }
 }
