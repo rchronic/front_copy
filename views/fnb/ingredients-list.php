@@ -17,7 +17,7 @@
 	<h3>Ingredients List</h3>
 
 	<div class="create-button">
-		<button data-toggle="modal" data-target="#create-ingredient-list" class="hero-button"><strong>+</strong> Create New Ingredient</button>
+		<button data-toggle="modal" data-target="#create-new-ingredient" class="hero-button"><strong>+</strong> Create New Ingredient</button>
 	</div>
 
 	<div class="content-setting">

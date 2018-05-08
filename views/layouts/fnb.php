@@ -304,6 +304,59 @@ foreach ( $user_properties as $property ) {
     <!-- ................................- buat Isi content -................................ -->
     <!-- ................................- buat Isi content -................................ -->
     <!-- create ingredient list -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="create-new-ingredient" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Create New Ingredient</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                        'id' => 'form-create-ingredient',
+                        'action' =>['fnb/create_ingredient'],
+                        'fieldConfig' => [
+                            'options' => [
+                                'tag' => false,
+                            ],
+                        ]
+                ]); ?>
+                
+                <div class="modal-body zero">
+                    <div class="col-sm-12" style="padding-left: 0;">
+                        <div class="auth-form">
+                            <label for="">Nama</label>
+                            <div class="clearfix">
+                                <input type="name" name="nama_material" required="" placeholder="Enter ingredient name" class="" id="nama_material">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                            
+                            <label for="">Total Stok</label>
+                            <div class="clearfix">
+                                <input type="number" name="total_stok" required="" placeholder="0" class="just-number" id="total_stok">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                            
+                            <label for="">Satuan</label>
+                            <div class="clearfix">
+                                <input type="text" name="satuan" required="" placeholder="Enter the unit" class="" id="satuan">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <?php ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
 
     <!-- edit ingredient list -->
     <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="edit-ingredient-list" style="z-index: 99992;">
@@ -359,35 +412,109 @@ foreach ( $user_properties as $property ) {
         </div>
     </div>
 
-    <!-- <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-ingredient-list" style="z-index: 99992;">
+    <!-- delete ingredient list -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-ingredient-list" style="z-index: 99992;">
+        <div class="modal-dialog short-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Delete Ingredient List</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                                    'id' => 'form-delete-ingredient',
+                                    'action' =>['fnb/delete_ingredient'],
+                                    'fieldConfig' => [
+                                        'options' => [
+                                            'tag' => false,
+                                        ],
+                                    ]
+                ]); ?>
+                <div class="modal-body">
+                    <p>Are you sure? You are about to delete a prep list.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="hidden" name="ingredient_id">
+                    <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+                <? ActiveForm::end(); ?>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- .................................- form procesing -................................. -->
+    <!-- .................................- form procesing -................................. -->
+    <!-- .................................- form procesing -................................. -->
+    <!-- .................................- form procesing -................................. -->
+    <!-- .................................- form procesing -................................. -->
+    <!-- message -->
+    <div class="modal fade just-modal" tabindex="2" role="dialog" id="message-modal" style="z-index: 999999;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button> -->
+            <h4 class="modal-title" id="message-title">Message</h4>
+        </div>
+
+        <div class="modal-body">
+            <p id="message-result"></p>
+        </div>
+
+        <div class="modal-footer">
+                <input type="submit" value="OK" id="message-button" data-dismiss="modal" aria-label="Close">
+        </div>
+
+        </div>
+    </div>
+    </div>
+    <!-- message -->
+
+    <!-- MESSAGE CONFIRM -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="message-confirm" style="z-index: 99992;">
     <div class="modal-dialog short-modal" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Delete Ingredient List</h4>
+            <h4 class="modal-title" id="message-title-confirm">Create Bed Type</h4>
         </div>
-        <?php $form = ActiveForm::begin([
-                            'id' => 'form-remove-ingredient',
-                            'action' =>['fnb/ingredient/delete'],
-                            'fieldConfig' => [
-                                'options' => [
-                                    'tag' => false,
-                                ],
-                            ]
-                        ]); ?>
+
         <div class="modal-body">
-            <p>Are you sure? You are about to delete a prep list.</p>
+            <p><span id="message-result-confirm"></span></p>
         </div>
 
             <div class="modal-footer">
-                <input type="hidden" name="ingredient_id">
-                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right" id="message-button-confirm">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right" id="message-button-cancel">Cancel</button>
             </div>
-            <? ActiveForm::end(); ?>
+
         </div>
     </div>
-    </div> -->
+    </div>
+    <!-- MESSAGE CONFIRM -->
+
+    <!-- MESSAGE CONFIRMED -->
+    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="message-confirmed" style="z-index: 99992;">
+    <div class="modal-dialog short-modal" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="message-title-confirmed">Bed Type Successfully Created</h4>
+        </div>
+
+        <div class="modal-body">
+            <p><span id="message-result-confirmed"></span></p>
+        </div>
+
+        </div>
+    </div>
+    </div>
+    <!-- MESSAGE CONFIRMED -->
+
+    <?php (isset(Yii::$app->controller->add_modal)) ? include(Yii::$app->controller->add_modal) : "";  ?>
 
     <?php $this->endBody() ?>
 

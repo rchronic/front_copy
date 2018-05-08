@@ -13,6 +13,7 @@ use app\models\Api_fnb;
 class Master_fnb extends Model {
     public $api;
     public $main_master;
+    public $json=true;
 
     function __construct()
     {
@@ -29,6 +30,11 @@ class Master_fnb extends Model {
         return true;
     }
 
+    public function set_json_result($val)
+    {
+        $this->json = $val;
+    }
+
     public function get_dashboard()
     {
         return $this->main_master->get_dashboard();
@@ -42,6 +48,41 @@ class Master_fnb extends Model {
                 window.location.href = '".Yii::$app->homeUrl."admin/login';
             </script>");
         }
+    }
+
+    public function get_simple_return($result)
+    {
+        $this->catch_error($result);
+        if (isset($result->data)) {
+            unset($result->data);
+        }
+
+        return $result;
+    }
+
+    public function catch_error($result)
+    {
+        if (isset($result->status) && $result->status == false) {
+            if ($this->json) {
+                die(json_encode($result));
+            } else {
+                if (isset($result->error_code) && ($result->error_code == "E1001" || $result->error_code == "E1002")) {
+                    die("<script> window.location.href = '".Yii::$app->homeUrl . "admin/login'; </script>");
+                } else {
+                    die($result->message);
+                }
+            }
+        } elseif (!isset($result->status)) {
+            if ($this->json) {
+                $json_res = [ "status" => false,
+                              "message" => "<pre>" . var_export($result, true) . "</pre>"];
+                die(json_encode($json_res));
+            } else {
+                die("<pre>" . var_export($result, true) . "</pre>");
+            }
+        }
+
+        return array(false, $result->message);
     }
 
     public function get_user_data($userid = null)
@@ -85,14 +126,7 @@ class Master_fnb extends Model {
 
     public function get_ingredients_list()
     {
-        $session = Yii::$app->getSession();
-        if ( $ingredients_list = $session->get("fnb_ingredients_list") ) {
-            
-        }
-        else {
-            $ingredients_list = $this->api->get_ingredients_list();
-            $session->set("fnb_ingredients_list", $ingredients_list);
-        }
+        $ingredients_list = $this->api->get_ingredients_list();
 
         return $this->get_data($ingredients_list);
     }
@@ -108,9 +142,22 @@ class Master_fnb extends Model {
     {
         $res = $this->api->update_ingredient($data);
 
-        return $res;
+        return $this->get_simple_return($res);
     }
 
+    public function create_ingredient($data)
+    {
+        $res = $this->api->create_ingredient($data);
+
+        return $this->get_simple_return($res);
+    }
+
+    public function delete_ingredient($ingredient_id)
+    {
+        $res = $this->api->delete_ingredient($ingredient_id);
+
+        return $this->get_simple_return($res);
+    }
 
 
 

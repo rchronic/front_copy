@@ -89,8 +89,23 @@ class Api_fnb extends Model {
         return $response;
     }
 
+    public function create_ingredient($params)
+    {
+        $response = $this->send_request("fnb/ingredients/create", $params);
 
+        return $response;
+    }
 
+    public function delete_ingredient($ingredient_id)
+    {
+        $params["ingredient_id"] = $ingredient_id;
+        $response = $this->send_request("fnb/ingredients/delete", $params);
+        // echo "<pre><br>hasilnya-list : ";
+        // var_dump($response);
+        // echo "</pre><br>";
+        // Yii::$app->end();
+        return $response;
+    }
 
 
 

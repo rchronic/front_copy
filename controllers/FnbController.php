@@ -81,7 +81,7 @@ class FnbController extends \yii\web\Controller
     public function actionIngredientsList()
     {
       $master = new Master_fnb();
-
+      $master->set_json_result(false);
       $this->dashboard    = $master->get_dashboard();
       $this->user_data    = $master->get_user_data();
       $this->current_data    = $master->get_current_data();
@@ -98,6 +98,29 @@ class FnbController extends \yii\web\Controller
       ]);
     }
 
+    /**
+     * vvv create ingredient vvv
+     */
+    public function actionCreate_ingredient()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->create_ingredient($data);
+        die(json_encode($response));
+    }
+
+    /**
+     * ^^^ create ingredient ^^^
+     */
+
+    /**
+     * vvv edit ingredient vvv
+     */
     public function actionEdit_ingredient()
     {
         $master = new Master_fnb();
@@ -123,8 +146,28 @@ class FnbController extends \yii\web\Controller
         $response = $master->update_ingredient($data);
         die(json_encode($response));
     }
+    /**
+     * ^^^ edit ingredient ^^^
+     */
 
+    /**
+     * vvv delete ingredient vvv
+     */
+    public function actionDelete_ingredient()
+    {
+        $master = new Master_fnb();
 
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->delete_ingredient($data["ingredient_id"]);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ delete ingredient ^^^
+     */
 
 
 
