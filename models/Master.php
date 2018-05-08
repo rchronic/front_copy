@@ -127,22 +127,4 @@ class Master extends Model {
         else
             return false;
     }
-
-    public function get_hotel_dashboard()
-    {
-        $session = Yii::$app->getSession();
-        if ( ( $hotel_dashboard = $session->get("hotel_dashboard") ) != null ) {
-
-        }
-        else {
-            $data = $this->get_data($this->api->get_hotel_dashboard());
-            $hotel_menu = $data->menu;
-            $data->menu = null;
-            $hotel_dashboard = $data;
-            $session->set("hotel_dashboard", $hotel_dashboard);
-            $session->set("hotel_menu", $hotel_menu);
-        }
-
-        return $hotel_dashboard;
-    }
 }

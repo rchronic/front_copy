@@ -59,11 +59,6 @@ class Master_fnb extends Model {
         return $this->main_master->get_user_properties();
     }
 
-    public function get_hotel_dashboard()
-    {
-        return $this->main_master->get_hotel_dashboard();
-    }
-
     public function get_logs($start, $return_full = false)
     {
         return $this->main_master->get_logs($start, $return_full);
@@ -100,6 +95,50 @@ class Master_fnb extends Model {
         }
 
         return $this->get_data($ingredients_list);
+    }
+
+    public function edit_ingredient($ingredient_id)
+    {
+        $res["detail"] = $this->get_data($this->api->get_ingredient_detail($ingredient_id));
+
+        return $res;
+    }
+
+    public function update_ingredient($data)
+    {
+        $res = $this->api->update_ingredient($data);
+
+        return $res;
+    }
+
+
+
+
+
+    public function cash_opname_list() {
+        $session = Yii::$app->getSession();
+        if ( $cash_opname_list = $session->get("cash_opname_list") ) {
+            
+        }
+        else {
+            $cash_opname_list = $this->api->cash_opname_list();
+            $session->set("cash_opname_list", $cash_opname_list);
+        }
+
+        return $this->get_data($ingredients_list);
+    }
+
+    public function cashier_annotation() {
+        $session = Yii::$app->getSession();
+        if ( $cashier_annotation = $session->get("cashier_annotation") ) {
+            
+        }
+        else {
+            $cashier_annotation = $this->api->cashier_annotation();
+            $session->set("cashier_annotation", $cashier_annotation);
+        }
+
+        return $this->get_data($cashier_annotation);
     }
 }
 

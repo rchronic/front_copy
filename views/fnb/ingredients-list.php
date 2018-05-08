@@ -17,7 +17,7 @@
 	<h3>Ingredients List</h3>
 
 	<div class="create-button">
-		<button data-toggle="modal" data-target="#create-list" class="hero-button"><strong>+</strong> Create New Ingredient</button>
+		<button data-toggle="modal" data-target="#create-ingredient-list" class="hero-button"><strong>+</strong> Create New Ingredient</button>
 	</div>
 
 	<div class="content-setting">
@@ -28,9 +28,9 @@
 				<div class="triangle"></div>
 				<ul class="_filter">
 					<li class="here" value="0">All View</li>
-					<li value="1">Menu Name</li>
-					<li value="2">Menu Type</li>
-					<li value="3">Price</li>
+					<li value="1">Nama</li>
+					<li value="2">Total Stok</li>
+					<li value="3">Satuan</li>
 				</ul>
 			</div>
 		</div>
@@ -55,33 +55,49 @@
 			<thead>
 				<tr>
 					<td>No</td>
-					<td>Name</td>
-					<td>Total Stock</td>
+					<td>Nama</td>
+					<td>Total Stok</td>
 					<td>Satuan</td>
 					<td></td>
 				</tr>
 			</thead>
 
-
 			<tbody>
 
 			<?php
 				$no = 1;
-				foreach ( $ingredients_list as $ingredient_list ){ ?>
+				foreach ( $ingredients_list as $ingredient_list ) { ?>
 				<tr id="list-<?php echo $ingredient_list->id ?>" data-id="<?php echo $ingredient_list->id ?>">
-					<td data-id="<?php echo $ingredient_list->id ?>"><?php echo $no++ ?></td>
-					<td data-name="<?echo $ingredient_list->material_name?>"><? echo $ingredient_list->material_name ?></td>
-					<td data-stock="<?echo $ingredient_list->total_stock?>"><? echo $ingredient_list->total_stock ?></td>
-					<td data-satuan="<?echo $ingredient_list->satuan?>"><? echo $ingredient_list->satuan ?></td>
+
+					<td data-id="<?php echo $ingredient_list->id ?>">
+						<?php echo $no++ ?>
+					</td>
+
+					<td data-nama="<?echo $ingredient_list->nama_material?>">
+						<? echo $ingredient_list->nama_material ?>
+					</td>
+
+					<td data-total-stok="<?echo $ingredient_list->total_stok?>">
+						<? echo $ingredient_list->total_stok ?>
+					</td>
+
+					<td data-satuan="<?echo $ingredient_list->satuan?>">
+						<? echo $ingredient_list->satuan ?>
+					</td>
+					
 					<td class="button-options">
-						<div class="table-button"><b>Options</b></div>
+						<div class="table-button">
+							<b>Options</b>
+						</div>
+
 						<div class="button-list">
 							<ul>
-								<li data-toggle="modal" data-target="#view-ingredients-list" for="#list-<?php echo $ingredient_list->id ?>">View Details</li>
-								<li data-toggle="modal" data-target="#edit-ingredients-list" for="#list-<?php echo $ingredient_list->id ?>">Edit</li>
-								<!-- <li data-toggle="modal" data-target="#delete-ingredient-list" data-id="<?php echo $ingredient_list->id ?>" for="#list-<?php echo $ingredient_list->id ?>">Delete</li> -->
+								<li data-toggle="modal" data-target="#edit-ingredient-list" data-id="<?php echo $ingredient_list->id ?>" for="#list-<?php echo $ingredient_list->id ?>">Edit</li>
+
+								<li data-toggle="modal" data-target="#delete-ingredient-list" data-id="<?php echo $ingredient_list->id ?>" for="#list-<?php echo $ingredient_list->id ?>">Delete</li>
 							</ul>
 						</div>
+
 					</td>
 				</tr>
 			<?php } ?>

@@ -87,12 +87,4 @@ class Api extends Model {
 
         return $response;
     }
-
-    public function get_hotel_dashboard()
-    {
-
-        $response = $this->send_request("hotel/dashboard");
-
-        return $response;
-    }
 }

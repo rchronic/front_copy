@@ -68,7 +68,6 @@ class FnbController extends \yii\web\Controller
         $this->user_data    = $master->get_user_data();
         $this->current_data    = $master->get_current_data();
         $this->user_properties = $master->get_user_properties();
-        $this->hotel_dashboard = $master->get_hotel_dashboard();
         $this->activities   = $master->get_logs(0);
         $this->fnb_menu      = $master->get_fnb_menu();
         $this->layout = "fnb";
@@ -87,8 +86,9 @@ class FnbController extends \yii\web\Controller
       $this->user_data    = $master->get_user_data();
       $this->current_data    = $master->get_current_data();
       $this->user_properties = $master->get_user_properties();
+      $this->activities   = $master->get_logs(0);
       $this->fnb_menu      = $master->get_fnb_menu();
-      $this->hotel_dashboard = $master->get_hotel_dashboard();
+      
       $this->layout = "fnb";
 
       return $this->render('ingredients-list', [
@@ -98,13 +98,70 @@ class FnbController extends \yii\web\Controller
       ]);
     }
 
-    public function actionIngredientdetail()
+    public function actionEdit_ingredient()
     {
         $master = new Master_fnb();
 
-        if (Yii::$app->request->post("ingredient_code") != null ) {
-            $res = $master->get_ingredient_detail(Yii::$app->request->post("ingredient_code"));
-            die(json_encode($res));
-        }
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->edit_ingredient($data["ingredient_id"]);
+        die(json_encode($response));
+    }
+
+    public function actionUpdate_ingredient()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->update_ingredient($data);
+        die(json_encode($response));
+    }
+
+
+
+
+
+
+    public function actionCashOpnameList() {
+        $master = new Master_fnb();
+
+        $this->dashboard    = $master->get_dashboard();
+        $this->user_data    = $master->get_user_data();
+        $this->current_data    = $master->get_current_data();
+        $this->user_properties = $master->get_user_properties();
+        $this->fnb_menu      = $master->get_fnb_menu();
+        $this->hotel_dashboard = $master->get_hotel_dashboard();
+        $this->layout = "fnb";
+
+        return $this->render('cash-opname-list', [
+            "dashboard"    => $this->dashboard,
+            "activities"   => $this->activities,
+            "ingredients_list" => $master->cash_opname_list()
+        ]);
+    }
+
+    public function actionCashierAnnotation() {
+        $master = new Master_fnb();
+
+        $this->dashboard    = $master->get_dashboard();
+        $this->user_data    = $master->get_user_data();
+        $this->current_data    = $master->get_current_data();
+        $this->user_properties = $master->get_user_properties();
+        $this->fnb_menu      = $master->get_fnb_menu();
+        $this->hotel_dashboard = $master->get_hotel_dashboard();
+        $this->layout = "fnb";
+
+        return $this->render('cashier-annotation', [
+            "dashboard"    => $this->dashboard,
+            "activities"   => $this->activities,
+            "ingredients_list" => $master->cashier_annotation()
+        ]);
     }
 }

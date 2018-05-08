@@ -18,7 +18,6 @@ $activities = Yii::$app->controller->activities;
 $user_data  = Yii::$app->controller->user_data;
 $user_cache = Yii::$app->controller->current_data;
 $user_properties = Yii::$app->controller->user_properties;
-$hotel_dashboard = Yii::$app->controller->hotel_dashboard;
 $fnb_menu      = Yii::$app->controller->fnb_menu;
 $add_class = Yii::$app->controller->add_class;
 $session_expired = Yii::$app->controller->session_expired;
@@ -222,10 +221,12 @@ foreach ( $user_properties as $property ) {
         </div>
     </div>
 
+    <!-- buat layout -->
     <div class="content background-users">
 
         <div class="row-eq-height">
 
+            <!-- buat sisi kiri layout -->
             <div class="header-side">
                 <?
                 // echo "<pre>" . var_export($hotel_menu, true) . "</pre>";
@@ -277,6 +278,7 @@ foreach ( $user_properties as $property ) {
 
             </div>
 
+            <!-- buat sisi tengah layout -->
             <div class="content-side">
                 <?= Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -296,402 +298,65 @@ foreach ( $user_properties as $property ) {
         <div class="clearfix"></div>
     </footer>
 
-    <?php $this->endBody() ?>
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- create ingredient list -->
 
-    <script>
-            // If session expired
-            <?
-        if ( $session_expired ) {
-            echo "\$('#your-session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
-            echo "\$('#session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
-            echo "\$('#session-expired').modal('show');";
-        }
-
-        $uri = $_SERVER["REQUEST_URI"];
-
-        if ( strlen($uri) > 3 ) {
-            $id = str_replace("/", "-", substr($uri, 1, strlen($uri)-1));
-            $id = str_replace("pipe-web-","",$id);
-
-            echo "try {
-                    console.log('ID Res', \$('#$id'));
-                    \$('#$id').addClass('current');
-                } catch(e) {
-                    console.log('Error');
-                }";
-        }
-
-        ?>
-
-        var homeUrl = "<? echo Yii::$app->homeUrl; ?>";
-        console.log("homeurl", homeUrl);
-    </script>
-
-
-    <div class="loading">
-        <div class="spinner"></div>
-    </div>
-
-    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="create-list" style="z-index: 99992;">
+    <!-- edit ingredient list -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="edit-ingredient-list" style="z-index: 99992;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="title">Create New Room List</h4>
+                    <h4 class="modal-title" id="title">Edit Data Ingredient</h4>
                 </div>
-
                 <?php $form = ActiveForm::begin([
-                                    'id' => 'form-create-room',
-                                    'action' =>[''],
-                                    'fieldConfig' => [
-                                        'options' => [
-                                            'tag' => false,
-                                        ],
-                                    ]
-                                ]); ?>
+                    'id' => 'form-update-ingredient',
+                    'action' => ['fnb/update_ingredient'],
+                    'fieldConfig' => [
+                        'options' => [
+                            'tag' => false,
+                        ],
+                    ],
+                ]); ?>
 
                 <div class="modal-body zero">
-
-                    <div class="col-sm-6" style="padding-left: 0;">
+                    <input type="hidden" name="ingredient_id" value="" />
+                    <div class="col-sm-12" style="padding-left: 0;">
                         <div class="auth-form">
-
-                            <label for="">Room Number</label>
+                            <label for="">Nama</label>
                             <div class="clearfix">
-                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                <input type="text" name="room_no" required="" placeholder="Enter the room number" class="">
+                                <input type="name" name="nama_material" required="" placeholder="Enter ingredient name" class="" id="nama_material">
                                 <div class="clear"></div>
-                                <div class="error">Please fill the bed type box above</div>
+                                <div class="error">Please fill the box above</div>
                             </div>
-
-                            <label for="">Floor</label>
+                            
+                            <label for="">Total Stok</label>
                             <div class="clearfix">
-                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                <input type="text" name="floor" required="" placeholder="Enter the floor room" class="">
+                                <input type="number" name="total_stok" required="" placeholder="0" class="just-number" id="total_stok">
                                 <div class="clear"></div>
-                                <div class="error">Please fill the bed type box above</div>
+                                <div class="error">Please fill the box above</div>
                             </div>
-
-                            <label for="">Room View</label>
-                            <div class="clearfix select-input" id="room-view">
-                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                <input type="text" name="view_id" required="" placeholder="Select the room view" disabled class="">
-                                <div class="arrow"></div>
-                                <div class="select" style="display: none;">
-                                <!-- Beri class here untuk option yang match -->
-                                </div>
-                                <input type="hidden" name="view_id" required="" id="select" class="selected">
-                                <div class="error">Please fill the room view box above</div>
+                            
+                            <label for="">Satuan</label>
+                            <div class="clearfix">
+                                <input type="text" name="satuan" required="" placeholder="Enter the unit" class="" id="satuan">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
                             </div>
-
-                            <label for="">Room Type</label>
-                            <div class="clearfix select-input" id="room-type">
-                                <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                <input type="text" name="type_id" required="" placeholder="Select the room type" disabled class="">
-                                <div class="arrow"></div>
-                                <div class="select" style="display: none;">
-                                <!-- Beri class here untuk option yang match -->
-                                </div>
-                                <input type="hidden" name="type_id" required="" id="select" class="selected">
-                                <div class="error">Please fill the room type box above</div>
-                            </div>
-
-                            <label for="">Bed Type</label>
-
-                            <div id="bed-type-boss">
-                                <div id="bed-type-box" for="1">
-                                    <div class="clearfix select-input" id="room-bed-1" style="width: 60%;float: left;">
-                                        <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                        <input type="text" name="room_bed" required="" placeholder="Select bed type" disabled class="">
-                                        <div class="arrow"></div>
-                                        <div class="select" style="display: none;">
-                                        <!-- Beri class here untuk option yang match -->
-                                        </div>
-                                        <input type="hidden" name="room_bed[]" required="" id="select" class="selected">
-                                        <div class="error">Please fill the box above</div>
-                                    </div>
-                                    <div class="clearfix select-input" id="room-bed-qty-1" style="width: 25%;float: left;margin-left: 4%;">
-                                        <!-- JIKA ERROR, ADDCLASS invalid pada input, otomatis akan muncul notif error nya -->
-                                        <input type="text" name="room_bed_qty" required="" placeholder="1" disabled class="">
-                                        <div class="arrow"></div>
-                                        <div class="select" style="display: none;">
-                                        <!-- Beri class here untuk option yang match -->
-                                        <div class="option" value="1">1</div>
-                                        <div class="option" value="2">2</div>
-                                        <div class="option" value="3">3</div>
-                                        <div class="option" value="4">4</div>
-                                        </div>
-                                        <input type="hidden" name="room_bed_qty[]" required="" id="select" class="selected" value="1">
-                                        <div class="error">Please fill the box above</div>
-                                    </div>
-                                    <div class="clearfix" style="width: 8%;float: left;margin-left: 3%;">
-                                        <div class="minus-list">-</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="clearfix" style="width: 70%;float: left;">
-                                <div class="add-list">Add Another Bed Type</div>
-                            </div>
-
                         </div>
                     </div>
-
-                    <div class="col-sm-6" style="padding-right: 0;">
-                        <div class="auth-form" id="room-lock">
-
-                            <label for="">Lock Type <i></i></label>
-                            <div class="clearfix round-radio">
-                                <div class="col-sm-4 zero">
-                                    <input type="radio" name="lock_type[]" value="0" id="lock-type-none" checked="">
-                                    <label for="lock-type-none"> None</label>
-                                </div>
-                                <div class="col-sm-4 zero">
-                                    <input type="radio" name="lock_type[]" value="1" id="lock-type-hotel">
-                                    <label for="lock-type-hotel"> Hotel Lock</label>
-                                </div>
-                                <div class="col-sm-4 zero">
-                                    <input type="radio" name="lock_type[]" value="2" id="lock-type-nac">
-                                    <label for="lock-type-nac"> NAC</label>
-                                </div>
-
-                            </div>
-                            <div class="hotel-lock">
-                            </div>
-
-                            <div class="nac">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="clearfix"></div>
-
                 </div>
-
                 <div class="modal-footer">
                     <input type="submit" name="submit" value="Save" class="pull-right">
                     <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
                 </div>
-
-                <? ActiveForm::end() ?>
+                <?php ActiveForm::end() ?>
             </div>
         </div>
-    </div>
-
-    <!-- view List -->
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="create-room-list" style="z-index: 99992;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Create Room List</h4>
-        </div>
-
-        <div class="modal-body">
-            <p>Are you sure? You are about to create the room list.</p>
-        </div>
-
-            <div class="modal-footer">
-                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right" data-dismiss="modal" data-toggle="modal" data-target="#created-room-list">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
-            </div>
-
-        </div>
-    </div>
-    </div>
-
-    <!-- View Detail Menu -->
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-list" style="z-index: 99992;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Menu Details</h4>
-        </div>
-
-        <div class="modal-body" style="margin-bottom: 10px">
-            <div class="col-sm-4 zero bold">Menu Code</div>
-            <div class="col-sm-8" for="menu-no"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Menu Name</div>
-            <div class="col-sm-8" for="menu-name"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Type Menu</div>
-            <div class="col-sm-8" for="menu-type"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Price</div>
-            <div class="col-sm-8" for="menu-price"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Cook Duration</div>
-            <div class="col-sm-8" for="menu-duration"></div>
-            <div class="clearfix"></div>
-            <!-- <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Port ID</div>
-            <div class="col-sm-8" for="room-port"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">NAC</div>
-            <div class="col-sm-8" for="room-nac"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Timezone</div>
-            <div class="col-sm-8" for="room-timezone"></div>
-            <div class="clearfix"></div> -->
-        </div>
-
-        </div>
-    </div>
-    </div>
-    <!-- View detail Menu -->
-
-    <!-- Delete Menu List -->
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-menu-list" style="z-index: 99991;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Delete Menu</h4>
-        </div>
-        <?php $form = ActiveForm::begin([
-                            'id' => 'form-remove-menu',
-                            'action' =>['fnb/menu_delete'],
-                            'fieldConfig' => [
-                                'options' => [
-                                    'tag' => false,
-                                ],
-                            ]
-                        ]); ?>
-        <div class="modal-body">
-            <p>Are you sure? You are about to delete menu.</p>
-        </div>
-
-            <div class="modal-footer">
-                <input type="hidden" name="menu_id" />
-                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
-            </div>
-        <? ActiveForm::end(); ?>
-        </div>
-    </div>
-    </div>
-    <!-- Delete Menu List -->
-
-    <!-- View Prep Detail -->
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-prep-list" style="z-index: 99992;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Prep Details</h4>
-        </div>
-
-        <div class="modal-body" style="margin-bottom: 10px">
-            <div class="col-sm-4 zero bold">Prep Code</div>
-            <div class="col-sm-8" for="prep-no"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Prep Name</div>
-            <div class="col-sm-8" for="prep-name"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <!-- <div class="col-sm-4 zero bold">Type Menu</div>
-            <div class="col-sm-8" for="menu-type"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Price</div>
-            <div class="col-sm-8" for="menu-price"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;"> -->
-
-            <div class="col-sm-4 zero bold">Prep Description</div>
-            <div class="col-sm-8" for="prep-desc"></div>
-            <div class="clearfix"></div>
-            <!-- <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Port ID</div>
-            <div class="col-sm-8" for="room-port"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">NAC</div>
-            <div class="col-sm-8" for="room-nac"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-            <div class="col-sm-4 zero bold">Timezone</div>
-            <div class="col-sm-8" for="room-timezone"></div>
-            <div class="clearfix"></div> -->
-        </div>
-
-        </div>
-    </div>
-    </div>
-
-    <!-- View Ingredient Detail -->
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="view-ingredients-list" style="z-index: 99992;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Ingredient Details</h4>
-        </div>
-
-        <div class="modal-body" style="margin-bottom: 10px">
-            <div class="col-sm-4 zero bold">Ingredient Code</div>
-            <div class="col-sm-8" for="ingredient-no"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-
-            <div class="col-sm-4 zero bold">Ingredient Name</div>
-            <div class="col-sm-8" for="ingredient-name"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-
-            <div class="col-sm-4 zero bold">Ingredient Stock</div>
-            <div class="col-sm-8" for="ingredient-stock"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-
-            <div class="col-sm-4 zero bold">Ingredient Satuan</div>
-            <div class="col-sm-8" for="ingredient-satuan"></div>
-            <div class="clearfix"></div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;">
-
-        </div>
-
-        </div>
-    </div>
-    </div>
-
-    <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-prep-list" style="z-index: 99992;">
-    <div class="modal-dialog short-modal" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-            <h4 class="modal-title" id="title">Delete Prep List</h4>
-        </div>
-        <?php $form = ActiveForm::begin([
-                            'id' => 'form-remove-prep',
-                            'action' =>['fnb/kitchen_preparation_delete'],
-                            'fieldConfig' => [
-                                'options' => [
-                                    'tag' => false,
-                                ],
-                            ]
-                        ]); ?>
-        <div class="modal-body">
-            <p>Are you sure? You are about to delete a prep list.</p>
-        </div>
-
-            <div class="modal-footer">
-                <input type="hidden" name="prep_id">
-                <input type="submit" name="submit" value="Yes, I am Sure" class="pull-right">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
-            </div>
-            <? ActiveForm::end(); ?>
-        </div>
-    </div>
     </div>
 
     <!-- <div class="modal fade just-modal hotel-modal" tabindex="2" role="dialog" id="delete-ingredient-list" style="z-index: 99992;">
@@ -723,6 +388,41 @@ foreach ( $user_properties as $property ) {
         </div>
     </div>
     </div> -->
+
+    <?php $this->endBody() ?>
+
+    <script>
+        // If session expired
+        <?
+            if ( $session_expired ) {
+                echo "\$('#your-session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
+                echo "\$('#session-expired').on('shown.bs.modal', {backdrop: 'static', keyboard: false});";
+                echo "\$('#session-expired').modal('show');";
+            }
+
+            $uri = $_SERVER["REQUEST_URI"];
+
+            if ( strlen($uri) > 3 ) {
+                $id = str_replace("/", "-", substr($uri, 1, strlen($uri)-1));
+                $id = str_replace("pipe-web-","",$id);
+
+                echo "try {
+                        console.log('ID Res', \$('#$id'));
+                        \$('#$id').addClass('current');
+                    } catch(e) {
+                        console.log('Error');
+                    }";
+            }
+
+        ?>
+
+        var homeUrl = "<? echo Yii::$app->homeUrl; ?>";
+        console.log("homeurl", homeUrl);
+    </script>
+
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
 
 <?php $this->endPage() ?>
 
