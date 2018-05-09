@@ -121,9 +121,9 @@ class Api_fnb extends Model {
         return $response;
     }
 
-    public function cashier_annotation()
+    public function cashier_annotation_list()
     {
-        $response = $this->send_request("fnb/cashier-annotation/list");
+        $response = $this->send_request("fnb/cash-opname/cashier-annotation/list");
         // echo "<pre><br>hasilnya-list : ";
         // var_dump($response);
         // echo "</pre><br>";

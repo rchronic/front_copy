@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-  <li class="breadcrumb-item"><a href="">Ingredients</a></li>
-  <li class="breadcrumb-item active">Ingredients-list</li>
+  <li class="breadcrumb-item"><a href="">Cash-Opname</a></li>
+  <li class="breadcrumb-item active">Cash-Opname-list</li>
 </ol>
 
 
@@ -14,10 +14,10 @@
 
 <div class="content-wrapper no-border width-100">
 
-	<h3>Ingredients List</h3>
+	<h3>Cash Opname List</h3>
 
 	<div class="create-button">
-		<button data-toggle="modal" data-target="#create-new-ingredient" class="hero-button"><strong>+</strong> Create New Ingredient</button>
+		<button data-toggle="modal" data-target="#create-new-cash-opname" class="hero-button"><strong>+</strong> Create New Cash Opname</button>
 	</div>
 
 	<div class="content-setting">
@@ -55,9 +55,12 @@
 			<thead>
 				<tr>
 					<td>No</td>
-					<td>Nama</td>
-					<td>Total Stok</td>
-					<td>Satuan</td>
+					<td>Tanggal</td>
+					<td>Kas Asli</td>
+					<td>Kas Virtual</td>
+					<td>Selisih Kas</td>
+					<td>Status</td>
+					<td>Deskripsi</td>
 					<td></td>
 				</tr>
 			</thead>
@@ -66,25 +69,37 @@
 
 			<?php
 				$no = 1;
-				foreach ( $ingredients_list as $ingredient_list ) { ?>
-				<tr id="list-<?php echo $ingredient_list->id ?>" data-id="<?php echo $ingredient_list->id ?>">
+				foreach ( $cash_opname_list as $cash_opname ) { ?>
+				<tr id="list-<?php echo $cash_opname->id ?>" data-id="<?php echo $cash_opname->id ?>">
 
-					<td data-id="<?php echo $ingredient_list->id ?>">
+					<td data-id="<?php echo $cash_opname->id ?>">
 						<?php echo $no++ ?>
 					</td>
 
-					<td data-nama-material="<?echo $ingredient_list->nama_material?>">
-						<? echo $ingredient_list->nama_material ?>
+					<td data-tanggal="<?echo $cash_opname->tanggal?>">
+						<? echo $cash_opname->tanggal ?>
 					</td>
 
-					<td data-total-stok="<?echo $ingredient_list->total_stok?>">
-						<? echo $ingredient_list->total_stok ?>
+					<td data-kas-asli="<?echo $cash_opname->kas_asli?>">
+						<? echo $cash_opname->kas_asli ?>
 					</td>
 
-					<td data-satuan="<?echo $ingredient_list->satuan?>">
-						<? echo $ingredient_list->satuan ?>
+					<td data-kas-virtual="<?echo $cash_opname->kas_virtual?>">
+						<? echo $cash_opname->kas_virtual ?>
 					</td>
 					
+					<td data-selisih-kas="<?echo $cash_opname->selisih_kas?>">
+						<? echo $cash_opname->selisih_kas ?>
+					</td>
+                    
+					<td data-status="<?echo $cash_opname->status?>">
+						<? echo $cash_opname->status ?>
+					</td>
+                    
+					<td data-deskripsi="<?echo $cash_opname->deskripsi?>">
+						<? echo $cash_opname->deskripsi ?>
+					</td>
+
 					<td class="button-options">
 						<div class="table-button">
 							<b>Options</b>
@@ -92,9 +107,9 @@
 
 						<div class="button-list">
 							<ul>
-								<li data-toggle="modal" data-target="#edit-ingredient-list" data-id="<?php echo $ingredient_list->id ?>" for="#list-<?php echo $ingredient_list->id ?>">Edit</li>
+								<li data-toggle="modal" data-target="#edit-ingredient-list" data-id="<?php echo $cash_opname->id ?>" for="#list-<?php echo $cash_opname->id ?>">Edit</li>
 
-								<li data-toggle="modal" data-target="#delete-ingredient-list" data-id="<?php echo $ingredient_list->id ?>" for="#list-<?php echo $ingredient_list->id ?>">Delete</li>
+								<li data-toggle="modal" data-target="#delete-ingredient-list" data-id="<?php echo $cash_opname->id ?>" for="#list-<?php echo $cash_opname->id ?>">Delete</li>
 							</ul>
 						</div>
 

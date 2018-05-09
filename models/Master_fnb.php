@@ -162,28 +162,16 @@ class Master_fnb extends Model {
 
 
 
-    public function cash_opname_list() {
-        $session = Yii::$app->getSession();
-        if ( $cash_opname_list = $session->get("cash_opname_list") ) {
-            
-        }
-        else {
-            $cash_opname_list = $this->api->cash_opname_list();
-            $session->set("cash_opname_list", $cash_opname_list);
-        }
+    public function cash_opname_list()
+    {
+        $cash_opname_list = $this->api->cash_opname_list();
 
-        return $this->get_data($ingredients_list);
+        return $this->get_data($cash_opname_list);
     }
 
-    public function cashier_annotation() {
-        $session = Yii::$app->getSession();
-        if ( $cashier_annotation = $session->get("cashier_annotation") ) {
-            
-        }
-        else {
-            $cashier_annotation = $this->api->cashier_annotation();
-            $session->set("cashier_annotation", $cashier_annotation);
-        }
+    public function cashier_annotation_list()
+    {
+        $cashier_annotation = $this->api->cashier_annotation_list();
 
         return $this->get_data($cashier_annotation);
     }

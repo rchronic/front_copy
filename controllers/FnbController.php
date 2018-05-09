@@ -78,6 +78,11 @@ class FnbController extends \yii\web\Controller
         ]);
     }
 
+    /**
+     * INGREDIENTS
+     * 
+     * vvv ingredients list vvv
+     */
     public function actionIngredientsList()
     {
       $master = new Master_fnb();
@@ -97,6 +102,9 @@ class FnbController extends \yii\web\Controller
           "ingredients_list" => $master->get_ingredients_list()
       ]);
     }
+    /**
+     * ^^^ ingredients list ^^^
+     */
 
     /**
      * vvv create ingredient vvv
@@ -171,40 +179,59 @@ class FnbController extends \yii\web\Controller
 
 
 
-
-    public function actionCashOpnameList() {
+    /**
+     * CASH OPNAME
+     * 
+     * vvv cash opname list vvv
+     */
+    public function actionCashOpnameList() 
+    {    
         $master = new Master_fnb();
-
+        $master->set_json_result(false);
         $this->dashboard    = $master->get_dashboard();
         $this->user_data    = $master->get_user_data();
         $this->current_data    = $master->get_current_data();
         $this->user_properties = $master->get_user_properties();
+        $this->activities   = $master->get_logs(0);
         $this->fnb_menu      = $master->get_fnb_menu();
-        $this->hotel_dashboard = $master->get_hotel_dashboard();
+        
         $this->layout = "fnb";
 
         return $this->render('cash-opname-list', [
             "dashboard"    => $this->dashboard,
             "activities"   => $this->activities,
-            "ingredients_list" => $master->cash_opname_list()
+            "cash_opname_list" => $master->cash_opname_list()
         ]);
     }
+    /**
+     * ^^^ cash opname list ^^^
+     */
 
-    public function actionCashierAnnotation() {
+    /**
+     * CASHIER ANNOTATION
+     * 
+     * vvv cashier annotation list vvv
+     */
+    public function actionCashierAnnotationList()
+    {
         $master = new Master_fnb();
-
+        $master->set_json_result(false);
         $this->dashboard    = $master->get_dashboard();
         $this->user_data    = $master->get_user_data();
         $this->current_data    = $master->get_current_data();
         $this->user_properties = $master->get_user_properties();
+        $this->activities   = $master->get_logs(0);
         $this->fnb_menu      = $master->get_fnb_menu();
-        $this->hotel_dashboard = $master->get_hotel_dashboard();
+        
         $this->layout = "fnb";
 
-        return $this->render('cashier-annotation', [
+        return $this->render('cashier-annotation-list', [
             "dashboard"    => $this->dashboard,
             "activities"   => $this->activities,
-            "ingredients_list" => $master->cashier_annotation()
+            "cashier_annotation_list" => $master->cashier_annotation_list()
         ]);
     }
+    /**
+     * ^^^ cashier annotation list ^^^
+     */
 }
