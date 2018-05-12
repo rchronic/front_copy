@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
   <li class="breadcrumb-item"><a href="">Ingredients</a></li>
-  <li class="breadcrumb-item active">Ingredients-list</li>
+  <li class="breadcrumb-item active">Ingredients-List</li>
 </ol>
 
 

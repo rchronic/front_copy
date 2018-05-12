@@ -43,8 +43,8 @@ foreach ( $user_properties as $property ) {
     <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/swiper.min.css">
     <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet.css">
     <!-- yang buat sendiri -->
-    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet_fnb.css">
     <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet_hotel.css">
+    <link rel="stylesheet" href="<? echo Yii::$app->homeUrl ?>assets/css/stylesheet_fnb.css">
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -443,8 +443,214 @@ foreach ( $user_properties as $property ) {
         </div>
     </div>
 
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- cash opname description -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="show-cashopname-description" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Cash Opname Description</h4>
+                </div>
 
+                <div class="modal-body" style="margin-bottom: 10px">
+                    <div class="col-sm-4 zero bold">Tanggal</div>
+                    <div class="col-sm-8" for="date"></div>
+                    <div class="clearfix"></div>
+                    <hr style="margin-top: 10px;margin-bottom: 10px;">
+                    
+                    <div class="col-sm-4 zero bold">Deskripsi</div>
+                    <div class="col-sm-8" for="description"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+
+    <!-- edit cash opname status -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="edit-cashopname-status" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Edit Status</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                    'id' => 'form-update-cashopname-status',
+                    'action' => ['fnb/update_cashopname_status'],
+                    'fieldConfig' => [
+                        'options' => [
+                            'tag' => false,
+                        ],
+                    ],
+                ]); ?>
+
+                <div class="modal-body zero">
+                    <input type="hidden" name="cash_opname_id" value="" />
+                    <div class="col-sm-12" style="padding-left: 0;">
+                        <div class="auth-form">
+                            <label for="">Kas Asli</label>
+                            <div class="clearfix">
+                                <select name="status" required="" class="form-control" id="status">
+                                    <option value="Belum Disetujui">Belum Disetujui</option>
+                                    <option value="Disetujui">Disetujui</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <?php ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- ................................- buat Isi content -................................ -->
+    <!-- create cashier annotation -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="create-new-cashier-annotation" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Create New Cashier Annotation</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                        'id' => 'form-create-cashier-annotation',
+                        'action' =>['fnb/create_cashier_annotation'],
+                        'fieldConfig' => [
+                            'options' => [
+                                'tag' => false,
+                            ],
+                        ]
+                ]); ?>
+                
+                <div class="modal-body zero">
+                    <div class="col-sm-12" style="padding-left: 0;">
+                        <div class="auth-form">                            
+                            <label for="">Kas Asli</label>
+                            <div class="clearfix">
+                                <input type="number" name="kas_asli" required="" placeholder="Enter the real cash" class="just-number" id="kas_asli">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                            
+                            <label for="">Deskripsi</label>
+                            <div class="clearfix">
+                                <textarea name="deskripsi" required="" placeholder="Enter your description" class="form-control" id="deskripsi" rows="5" maxlength="1000"></textarea>
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <?php ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit cash opname real cash -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="edit-cashopname-real-cash" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Edit Real Cash</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                    'id' => 'form-update-cashopname-real-cash',
+                    'action' => ['fnb/update_cashopname_real_cash'],
+                    'fieldConfig' => [
+                        'options' => [
+                            'tag' => false,
+                        ],
+                    ],
+                ]); ?>
+
+                <div class="modal-body zero">
+                    <input type="hidden" name="cashier_annotation_id" value="" />
+                    <div class="col-sm-12" style="padding-left: 0;">
+                        <div class="auth-form">
+                            <label for="">Kas Asli</label>
+                            <div class="clearfix">
+                                <input type="number" name="kas_asli" required="" placeholder="Enter the real cash" class="just-number" id="kas_asli">
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <?php ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit cash opname description -->
+    <div class="modal fade modal-table hotel-modal" tabindex="2" role="dialog" id="edit-cashopname-description" style="z-index: 99992;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <h4 class="modal-title" id="title">Edit Real Cash</h4>
+                </div>
+                <?php $form = ActiveForm::begin([
+                    'id' => 'form-update-cashopname-description',
+                    'action' => ['fnb/update_cashopname_description'],
+                    'fieldConfig' => [
+                        'options' => [
+                            'tag' => false,
+                        ],
+                    ],
+                ]); ?>
+
+                <div class="modal-body zero">
+                    <input type="hidden" name="cashier_annotation_id" value="" />
+                    <div class="col-sm-12" style="padding-left: 0;">
+                        <div class="auth-form">
+                            <label for="">Deskripsi</label>
+                            <div class="clearfix">
+                                <textarea name="deskripsi" required="" placeholder="Enter your description" class="form-control" id="deskripsi" rows="5" maxlength="1000"></textarea>
+                                <div class="clear"></div>
+                                <div class="error">Please fill the box above</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="submit" value="Save" class="pull-right">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="button pull-right">Cancel</button>
+                </div>
+
+                <?php ActiveForm::end() ?>
+            </div>
+        </div>
+    </div>
 
     <!-- .................................- form procesing -................................. -->
     <!-- .................................- form procesing -................................. -->

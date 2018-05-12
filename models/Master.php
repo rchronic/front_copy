@@ -8,6 +8,7 @@ use app\models\Api;
 
 class Master extends Model {
     public $api;
+    public $json=true;
 
     function __construct() {
         $this->call_api();
@@ -19,6 +20,46 @@ class Master extends Model {
         }
 
         return true;
+    }
+
+    public function set_json_result($val)
+    {
+        $this->json = $val;
+    }
+
+    public function get_simple_return($result)
+    {
+        $this->catch_error($result);
+        if (isset($result->data)) {
+            unset($result->data);
+        }
+
+        return $result;
+    }
+
+    public function catch_error($result)
+    {
+        if (isset($result->status) && $result->status == false) {
+            if ($this->json) {
+                die(json_encode($result));
+            } else {
+                if (isset($result->error_code) && ($result->error_code == "E1001" || $result->error_code == "E1002")) {
+                    die("<script> window.location.href = '".Yii::$app->homeUrl . "admin/login'; </script>");
+                } else {
+                    die($result->message);
+                }
+            }
+        } elseif (!isset($result->status)) {
+            if ($this->json) {
+                $json_res = [ "status" => false,
+                              "message" => "<pre>" . var_export($result, true) . "</pre>"];
+                die(json_encode($json_res));
+            } else {
+                die("<pre>" . var_export($result, true) . "</pre>");
+            }
+        }
+
+        return array(false, $result->message);
     }
 
     public function get_data($result) {

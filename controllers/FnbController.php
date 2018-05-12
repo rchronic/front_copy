@@ -78,6 +78,14 @@ class FnbController extends \yii\web\Controller
         ]);
     }
 
+
+
+
+
+
+
+
+
     /**
      * INGREDIENTS
      * 
@@ -179,6 +187,12 @@ class FnbController extends \yii\web\Controller
 
 
 
+
+
+
+
+
+
     /**
      * CASH OPNAME
      * 
@@ -208,6 +222,32 @@ class FnbController extends \yii\web\Controller
      */
 
     /**
+     * vvv cash opname detail
+     */
+    public function actionCash_opname_description()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        $response = $master->get_cash_opname_description($data["cash_opname_id"]);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ cash opname detail ^^^
+     */
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * CASHIER ANNOTATION
      * 
      * vvv cashier annotation list vvv
@@ -233,5 +273,119 @@ class FnbController extends \yii\web\Controller
     }
     /**
      * ^^^ cashier annotation list ^^^
+     */
+
+    /**
+     * vvv create cashier annotation vvv
+     */
+    public function actionCreate_cashier_annotation() {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->create_cashier_annotation($data);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ create cashier annotation ^^^
+     */
+
+    /**
+     * vvv edit cash opname real cash vvv
+     */
+    public function actionEdit_cashopname_real_cash()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->edit_cashopname_real_cash($data["cashier_annotation_id"]);
+        die(json_encode($response));
+    }
+
+    public function actionUpdate_cashopname_real_cash()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->update_cashopname_real_cash($data);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ edit cash opname real cash ^^^
+     */
+
+    /**
+     * vvv edit cash opname description vvv
+     */
+    public function actionEdit_cashopname_description()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->edit_cashopname_description($data["cashier_annotation_id"]);
+        die(json_encode($response));
+    }
+
+    public function actionUpdate_cashopname_description()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->update_cashopname_description($data);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ edit cash opname description ^^^
+     */
+
+    /**
+     * vvv edit cash opname status vvv
+     */
+    public function actionEdit_cashopname_status()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->edit_cashopname_status($data["cash_opname_id"]);
+        die(json_encode($response));
+    }
+
+    public function actionUpdate_cashopname_status()
+    {
+        $master = new Master_fnb();
+
+        $data = Yii::$app->request->post();
+
+        unset($data["_csrf"]);
+        unset($data["submit"]);
+
+        $response = $master->update_cashopname_status($data);
+        die(json_encode($response));
+    }
+    /**
+     * ^^^ edit cash opname status ^^^
      */
 }
